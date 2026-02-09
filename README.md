@@ -1,1 +1,780 @@
 # hbd0309
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>神秘二選一｜可愛約會慶生</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root{
+      --bg1:#fff1f6;
+      --bg2:#f0f9ff;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --line:#f1f5f9;
+      --primary:#ec4899;
+      --primary2:#8b5cf6;
+      --shadow: 0 22px 55px rgba(17,24,39,0.12);
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
+      background:
+        radial-gradient(1200px 800px at 20% 10%, var(--bg2), transparent 60%),
+        radial-gradient(1000px 700px at 80% 0%, var(--bg1), transparent 55%),
+        linear-gradient(135deg, #ffffff, #fdf2f8);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      padding: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      width: 100%;
+      max-width: 520px;
+      padding: calc(22px + env(safe-area-inset-top))
+               calc(16px + env(safe-area-inset-right))
+               calc(18px + env(safe-area-inset-bottom))
+               calc(16px + env(safe-area-inset-left));
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glow {
+      position: absolute;
+      inset: -60px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(236,72,153,0.18), transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(139,92,246,0.15), transparent 45%),
+        radial-gradient(circle at 70% 80%, rgba(14,165,233,0.12), transparent 45%);
+      pointer-events: none;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin: 0 0 6px;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 18px;
+      line-height: 1.4;
+    }
+
+    .pillbar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 0 14px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(236,72,153,0.12), rgba(139,92,246,0.10));
+      border: 1px solid rgba(236,72,153,0.18);
+      font-size: 12px;
+      color: #374151;
+    }
+
+    .stepTitle {
+      margin: 10px 0 6px;
+      font-size: 18px;
+    }
+
+    .hint {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr; /* mobile-first */
+      gap: 14px;
+      margin: 12px 0 10px;
+    }
+
+    .options.three {
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 520px) {
+      .options { grid-template-columns: 1fr 1fr; }
+      .options.three { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .option {
+      padding: 16px 14px;
+      min-height: 64px;
+      border-radius: 16px;
+      border: 2px solid #f3f4f6;
+      cursor: pointer;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+      font-size: 16px;
+      background: linear-gradient(180deg, #ffffff, #fafafa);
+      position: relative;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      text-align: left;
+    }
+
+    .option b{ display:block; font-size: 15px; }
+
+    .option small{
+      display:block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .option:hover {
+      border-color: #d1d5db;
+      transform: translateY(-2px);
+    }
+
+    .option.selected {
+      border-color: rgba(236,72,153,0.8);
+      background: linear-gradient(180deg, rgba(236,72,153,0.10), rgba(139,92,246,0.06));
+      font-weight: 700;
+    }
+
+    .actions{
+      display:flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 14px 18px;
+      min-height: 48px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(236,72,153,0.25);
+    }
+
+    button.secondary{
+      background: #fff;
+      color: #374151;
+      border: 1px solid #e5e7eb;
+      box-shadow: none;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .reveal {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px 14px;
+      background: linear-gradient(180deg, #ffffff, #fdf2f8);
+      text-align: left;
+      transform: translateY(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reveal.show{
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .reveal h3{
+      margin: 0 0 6px;
+      font-size: 14px;
+      color: #111827;
+    }
+
+    .reveal .big{
+      font-size: 18px;
+      font-weight: 800;
+      margin: 2px 0 8px;
+    }
+
+    .reveal .desc{
+      margin: 0;
+      color: #374151;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .summary {
+      margin-top: 14px;
+      text-align: left;
+      border-top: 1px dashed #e5e7eb;
+      padding-top: 12px;
+      display:none;
+    }
+
+    .summary.show{ display:block; }
+
+    .summary h2{
+      font-size: 16px;
+      margin: 0 0 8px;
+    }
+
+    .summary ul{
+      margin: 0;
+      padding-left: 18px;
+      color:#374151;
+      line-height: 1.4;
+    }
+
+    footer {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    /* ===== gate animations ===== */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    .shake { animation: shake 0.35s ease; }
+
+    @keyframes pop {
+      0% { transform: scale(0.98); opacity: 0.6; }
+      60% { transform: scale(1.02); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .pop { animation: pop 0.35s ease; }
+
+    @keyframes floatHeart {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(-90px) scale(1.25); opacity: 0; }
+    }
+
+    .heart {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+      pointer-events: none;
+      opacity: 0;
+      animation: floatHeart 0.9s ease forwards;
+      filter: drop-shadow(0 6px 10px rgba(236,72,153,0.20));
+    }
+
+    @keyframes fadeOutUp {
+      to { opacity: 0; transform: translateY(-6px) scale(0.98); }
+    }
+
+    .gate-success {
+      animation: fadeOutUp 0.35s ease forwards;
+    }
+
+    /* iOS: prevent button tap delay / highlight */
+    button, .option { touch-action: manipulation; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="glow"></div>
+
+    <h1>💖 神秘選擇：可愛約會慶生</h1>
+    <p class="subtitle">在開始之前，先通過一個小小的通關密語 💌</p>
+
+    <!-- 🔐 起始通關密語（只在第一步前顯示） -->
+    <div class="reveal show" id="gateBox">
+      <h3>🔐 請輸入通關密語</h3>
+      <div class="big">準備好了嗎？</div>
+      <p class="desc">輸入正確後，才能開始今天的選擇。</p>
+      <div class="actions" style="justify-content:flex-start; margin-top: 10px;">
+        <input id="gateInput" placeholder="輸入通關密語" style="flex:1; min-width: 180px; padding: 14px 16px; border-radius: 999px; border: 1px solid #e5e7eb; font-size: 16px;" />
+        <button class="secondary" id="gateBtn" type="button">進入</button>
+      </div>
+      <p class="desc" id="gateMsg" style="margin-top:10px; color:#6b7280; font-size:12px;">提示：這是一句對你很重要的話。</p>
+    </div>
+
+    <div class="pillbar">
+      <span class="pill" id="progressPill">步驟 1 / 5</span>
+      <span class="pill" id="moodPill">今日心情：甜甜的</span>
+    </div>
+
+    <div class="stepTitle" id="stepTitle">—</div>
+    <p class="hint" id="hint">—</p>
+
+    <div class="options" id="options"><!-- options injected --></div>
+
+    <div class="actions">
+      <button id="revealBtn" disabled>我選好了，揭曉！</button>
+    </div>
+
+    <!-- 🔒 約會當天步驟鎖定區（只靠解鎖碼） -->
+    <div class="reveal" id="lockBox">
+      <h3>🔒 這一步需要輸入解鎖碼</h3>
+      <div class="big" id="lockMsg">—</div>
+      <p class="desc" id="countdown">—</p>
+      <div class="actions" style="justify-content:flex-start; margin-top: 10px;">
+        <input id="codeInput" placeholder="輸入解鎖碼" style="flex:1; min-width: 180px; padding: 14px 16px; border-radius: 999px; border: 1px solid #e5e7eb; font-size: 16px;" />
+        <button class="secondary" id="unlockBtn" type="button">解鎖</button>
+      </div>
+      <p class="desc" style="margin-top:10px; color:#6b7280; font-size:12px;">提示：解鎖碼正確就會開放後續步驟。</p>
+    </div>
+
+    <div class="reveal" id="revealBox" aria-live="polite">
+      <h3>🎀 你這一步抽到的是：</h3>
+      <div class="big" id="revealBig">—</div>
+      <p class="desc" id="revealDesc">—</p>
+      <div class="actions" style="justify-content:flex-end; margin-top: 10px;">
+        <button class="secondary" id="nextBtn" type="button">下一步 ➜</button>
+      </div>
+    </div>
+
+    <div class="summary" id="summary">
+      <h2>📌 你的約會慶生路線</h2>
+      <ul id="summaryList"></ul>
+      <div class="actions" style="justify-content:flex-start; margin-top: 10px;">
+        <button id="copyBtn" class="secondary" type="button">複製結果</button>
+      </div>
+    </div>
+
+    <footer>這是可分享的前端版本（無後端）。選擇會保存在瀏覽器中。</footer>
+  </div>
+
+  <script>
+    // ====== 約會當天解鎖設定（只靠解鎖碼） ======
+    const unlockConfig = {
+      unlockAtISO: null, // 保留欄位但不使用
+      unlockCode: "HBD0309"
+    };
+
+    const STORAGE_KEY = "mystery_date_v1";
+    const GATE_PHRASE = "我愛林智涵"; // 起始通關密語
+
+    // ✅ 已套用你給的餐廳與禮物，並使用定稿文案。
+    const steps = [
+      {
+        phase: "pre",
+        title: "Step 1：午餐風格（三選一）",
+        hint: "先盲選一個風格；選完才會揭曉是哪一間。",
+        mood: "期待值 +1",
+        options: {
+          A: {
+            big: "🍶 日式職人系｜滿酌屋（台北市大同區）",
+            desc: "走一個低調但很講究的路線：節奏剛好、細節到位，適合好好吃飯、好好聊天。"
+          },
+          B: {
+            big: "🌿 溫柔生活系｜禾十心（新北市三重區）",
+            desc: "不是華麗路線，而是會讓人放鬆下來的舒服感；吃完心情會變得很平靜。"
+          },
+          C: {
+            big: "🔥 儀式感慶生系｜山上走走 日式燒肉（台北市中正區）",
+            desc: "今天這一餐本身就是一個重點：很明確地讓人感覺到『今天不一樣』。"
+          }
+        }
+      },
+      {
+        phase: "pre",
+        title: "Step 2：生日禮物（二選一）",
+        hint: "先選方向；揭曉後你才會知道我準備的是哪一種。",
+        mood: "偷偷準備中",
+        options: {
+          A: {
+            big: "🧼 生活升級派",
+            desc: "是一個會讓生活變得更俐落的小東西。不用張揚，但會默默讓整個人看起來更乾淨、更有精神。"
+          },
+          B: {
+            big: "💗 心心念念派（你來決定細節）",
+            desc: "細節交給你決定，我只負責訂一個小小的上限：NT$4,000。"
+          }
+        }
+      },
+      {
+        phase: "day",
+        title: "Step 3：Dress code（當天才選）",
+        hint: "約會當天再一起選，才有驚喜感。",
+        mood: "可愛警報",
+        options: {
+          A: { big: "👟 休閒路線", desc: "舒服就好，能走、能坐、能笑；今天的重點不是拘謹。" },
+          B: { big: "👗 微正式路線", desc: "稍微打扮一下，今天很值得被好好記住。" }
+        }
+      },
+      {
+        phase: "day",
+        title: "Step 4：飯後行程（當天才選）",
+        hint: "吃完飯之後，要把時間交給哪種節奏？",
+        mood: "心動路線",
+        options: {
+          A: { big: "🏮 大稻埕散步", desc: "邊走邊聊、邊拍邊笑，今天會慢慢變成一段回憶。" },
+          B: { big: "🚲 河濱公園騎腳踏車", desc: "風吹過來很舒服，騎一段路，把幸福感拉長。" }
+        }
+      },
+      {
+        phase: "day",
+        title: "Step 5：最後收尾（當天才選）",
+        hint: "最後一個選擇，決定怎麼把這一天留下來。",
+        mood: "心動收尾",
+        options: {
+          A: { big: "📸 拍一張拍立得", desc: "留一張實體的證據，證明我們今天真的很快樂。" },
+          B: { big: "💌 手寫心得小卡", desc: "把今天的心情寫下來，只送一次，只給今天。" }
+        }
+      }
+    ];
+
+    // ===== DOM =====
+    const els = {
+      gateBox: document.getElementById('gateBox'),
+      gateInput: document.getElementById('gateInput'),
+      gateBtn: document.getElementById('gateBtn'),
+      gateMsg: document.getElementById('gateMsg'),
+
+      lockBox: document.getElementById('lockBox'),
+      lockMsg: document.getElementById('lockMsg'),
+      codeInput: document.getElementById('codeInput'),
+      unlockBtn: document.getElementById('unlockBtn'),
+      countdown: document.getElementById('countdown'),
+
+      progressPill: document.getElementById('progressPill'),
+      moodPill: document.getElementById('moodPill'),
+      stepTitle: document.getElementById('stepTitle'),
+      hint: document.getElementById('hint'),
+      options: document.getElementById('options'),
+      revealBtn: document.getElementById('revealBtn'),
+      revealBox: document.getElementById('revealBox'),
+      revealBig: document.getElementById('revealBig'),
+      revealDesc: document.getElementById('revealDesc'),
+      nextBtn: document.getElementById('nextBtn'),
+      summary: document.getElementById('summary'),
+      summaryList: document.getElementById('summaryList'),
+      copyBtn: document.getElementById('copyBtn')
+    };
+
+    // ===== State =====
+    let stepIndex = 0;
+    let selectedKey = null; // 'A' | 'B' | 'C'
+    const picks = []; // revealed big strings
+
+    function scrollToEl(el) {
+      try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (Array.isArray(data.picks)) data.picks.forEach((v, i) => (picks[i] = v));
+        if (typeof data.stepIndex === 'number') stepIndex = data.stepIndex;
+        if (data.unlocked === true) sessionStorage.setItem(STORAGE_KEY + '_unlocked', '1');
+      } catch (e) {}
+    }
+
+    function saveState() {
+      try {
+        const data = {
+          stepIndex,
+          picks,
+          unlocked: sessionStorage.getItem(STORAGE_KEY + '_unlocked') === '1'
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {}
+    }
+
+    function isDayUnlocked() {
+      return sessionStorage.getItem(STORAGE_KEY + '_unlocked') === '1';
+    }
+
+    function updateLockUI() {
+      els.countdown.textContent = isDayUnlocked()
+        ? '已解鎖 ✅ 可以繼續選擇～'
+        : '請輸入解鎖碼來開放下一步～';
+    }
+
+    function buildLabel(index) {
+      return `選項 ${index + 1}`;
+    }
+
+    function renderStep() {
+      const step = steps[stepIndex];
+
+      // end guard
+      if (!step) {
+        els.options.innerHTML = '';
+        els.revealBtn.style.display = 'none';
+        els.revealBox.classList.remove('show');
+        els.lockBox.classList.remove('show');
+        els.stepTitle.textContent = '🎉 完成！你走出一條專屬約會慶生路線';
+        els.hint.textContent = '把結果截圖或複製傳給對方吧～';
+        els.progressPill.textContent = `完成 / ${steps.length} 步`;
+        els.moodPill.textContent = '今日心情：心動完成';
+        showSummary();
+        saveState();
+        return;
+      }
+
+      els.revealBtn.style.display = '';
+      els.progressPill.textContent = `步驟 ${stepIndex + 1} / ${steps.length}`;
+      els.moodPill.textContent = `今日心情：${step.mood}`;
+      els.stepTitle.textContent = step.title;
+      els.hint.textContent = step.hint;
+
+      // lock logic for day steps
+      const locked = (step.phase === 'day') && !isDayUnlocked();
+
+      els.options.innerHTML = '';
+      els.revealBox.classList.remove('show');
+      els.revealBig.textContent = '—';
+      els.revealDesc.textContent = '—';
+
+      if (locked) {
+        els.revealBtn.disabled = true;
+        els.lockMsg.textContent = '這一步先保留到約會當天 💖';
+        els.lockBox.classList.add('show');
+        updateLockUI();
+        saveState();
+        return;
+      }
+
+      // unlocked: hide lock UI
+      els.lockBox.classList.remove('show');
+
+      const keys = Object.keys(step.options);
+      els.options.classList.toggle('three', keys.length === 3);
+
+      keys.forEach((key, idx) => {
+        const div = document.createElement('div');
+        div.className = 'option';
+        div.dataset.value = key;
+        div.innerHTML = `<b>${buildLabel(idx)}</b><small>點我選擇（先不揭曉）</small>`;
+        div.addEventListener('click', () => {
+          Array.from(els.options.children).forEach(c => c.classList.remove('selected'));
+          div.classList.add('selected');
+          selectedKey = key;
+          els.revealBtn.disabled = false;
+          els.revealBox.classList.remove('show');
+        });
+        els.options.appendChild(div);
+      });
+
+      selectedKey = null;
+      els.revealBtn.disabled = true;
+      saveState();
+    }
+
+    function reveal() {
+      if (!selectedKey) return;
+      const step = steps[stepIndex];
+      const payload = step.options[selectedKey];
+
+      els.revealBig.textContent = payload.big;
+      els.revealDesc.textContent = payload.desc;
+      els.revealBox.classList.add('show');
+
+      if (!picks[stepIndex]) picks[stepIndex] = payload.big;
+      saveState();
+    }
+
+    function next() {
+      if (!picks[stepIndex]) return; // must reveal before next
+      stepIndex++;
+      saveState();
+      renderStep();
+    }
+
+    function showSummary() {
+      els.summaryList.innerHTML = '';
+      picks.forEach((p, i) => {
+        const li = document.createElement('li');
+        li.textContent = `Step ${i + 1}：${p}`;
+        els.summaryList.appendChild(li);
+      });
+      els.summary.classList.add('show');
+    }
+
+    async function copySummary() {
+      const lines = picks.map((p, i) => `Step ${i + 1}：${p}`);
+      const text = `我的約會慶生路線\n${lines.join('\n')}`;
+      try {
+        await navigator.clipboard.writeText(text);
+        els.copyBtn.textContent = '已複製 ✅';
+        setTimeout(() => (els.copyBtn.textContent = '複製結果'), 1200);
+      } catch (e) {
+        prompt('複製以下文字：', text);
+      }
+    }
+
+    // ===== Self tests (console) =====
+    function runSelfTests() {
+      const requiredEls = [
+        // gate
+        'gateBox','gateInput','gateBtn','gateMsg',
+        // lock
+        'lockBox','lockMsg','codeInput','unlockBtn','countdown',
+        // main
+        'progressPill','moodPill','stepTitle','hint','options','revealBtn',
+        'revealBox','revealBig','revealDesc','nextBtn','summary','summaryList','copyBtn'
+      ];
+      requiredEls.forEach(k => console.assert(!!els[k], `Missing element: ${k}`));
+
+      console.assert(typeof scrollToEl === 'function', 'scrollToEl should be a function');
+      console.assert(Array.isArray(steps) && steps.length === 5, 'steps should be an array of length 5');
+
+      steps.forEach((s, i) => {
+        console.assert(s && (s.phase === 'pre' || s.phase === 'day'), `steps[${i}].phase must be pre/day`);
+        console.assert(s.options && Object.keys(s.options).length >= 2, `steps[${i}] must have 2+ options`);
+        Object.keys(s.options).forEach(k => {
+          console.assert(typeof s.options[k].big === 'string', `steps[${i}].options.${k}.big must be string`);
+          console.assert(typeof s.options[k].desc === 'string', `steps[${i}].options.${k}.desc must be string`);
+        });
+      });
+
+      // Step1 should be 3 options
+      console.assert(Object.keys(steps[0].options).length === 3, 'Step 1 should have 3 options');
+
+      // unlock mode sanity
+      console.assert(unlockConfig.unlockAtISO === null, 'unlockAtISO should be null when using code-only unlock');
+      console.assert(typeof unlockConfig.unlockCode === 'string' && unlockConfig.unlockCode.length > 0, 'unlockCode should be a non-empty string');
+
+      // gate phrase sanity
+      console.assert(typeof GATE_PHRASE === 'string' && GATE_PHRASE.length >= 2, 'GATE_PHRASE should be a non-empty string');
+
+      const sample = `我的約會慶生路線\nStep 1：X`;
+      console.assert(sample.includes('\n'), 'copy summary should contain newline characters');
+    }
+
+    // ===== Events =====
+    els.revealBtn.addEventListener('click', reveal);
+    els.nextBtn.addEventListener('click', next);
+    els.copyBtn.addEventListener('click', copySummary);
+
+    function tryUnlock() {
+      const code = (els.codeInput.value || '').trim();
+      const required = (unlockConfig.unlockCode || '').trim();
+
+      if (code && required && code === required) {
+        sessionStorage.setItem(STORAGE_KEY + '_unlocked', '1');
+        els.lockMsg.textContent = '解鎖成功 ✅ 約會當天選項已開放';
+        els.codeInput.value = '';
+        saveState();
+        renderStep();
+      } else {
+        els.lockMsg.textContent = '解鎖碼不對喔 🥺 再試一次～';
+        updateLockUI();
+      }
+    }
+
+    els.unlockBtn.addEventListener('click', tryUnlock);
+    els.codeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') tryUnlock();
+    });
+    els.codeInput.addEventListener('focus', () => scrollToEl(els.lockBox));
+
+    // ===== Gate animations + hints =====
+    let gateAttempts = 0;
+
+    function gateHint(attempt) {
+      if (attempt <= 1) return '好像不太對，再想一下 💭（提示：以「我愛」開頭）';
+      if (attempt === 2) return '再近一點點：五個字，前兩個字是「我愛」✨';
+      if (attempt === 3) return '最後提示：我愛 + 一個人的全名（四個字）';
+      return '已經很接近了，再試一次～';
+    }
+
+    function burstHearts() {
+      const box = els.gateBox;
+      const hearts = ['💖','💗','💘','💕'];
+      for (let i = 0; i < 10; i++) {
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.textContent = hearts[i % hearts.length];
+        const x = 12 + Math.random() * 76;
+        h.style.left = x + '%';
+        h.style.animationDelay = (Math.random() * 0.12) + 's';
+        h.style.fontSize = (14 + Math.random() * 10) + 'px';
+        box.appendChild(h);
+        setTimeout(() => h.remove(), 1100);
+      }
+    }
+
+    function shakeGate() {
+      els.gateBox.classList.remove('shake');
+      void els.gateBox.offsetWidth;
+      els.gateBox.classList.add('shake');
+    }
+
+    function tryGate() {
+      const v = (els.gateInput.value || '').trim();
+      if (v === GATE_PHRASE) {
+        sessionStorage.setItem(STORAGE_KEY + '_gate', '1');
+        els.gateMsg.textContent = '通關成功 ✅ 進入今天的選擇…';
+        els.gateBox.classList.add('pop');
+        burstHearts();
+        setTimeout(() => {
+          els.gateBox.classList.add('gate-success');
+          setTimeout(() => {
+            els.gateBox.classList.remove('show');
+            els.gateBox.style.display = 'none';
+            renderStep();
+          }, 260);
+        }, 420);
+      } else {
+        gateAttempts += 1;
+        els.gateMsg.textContent = gateHint(gateAttempts);
+        shakeGate();
+      }
+    }
+
+    els.gateBtn.addEventListener('click', tryGate);
+    els.gateInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') tryGate();
+    });
+    els.gateInput.addEventListener('focus', () => scrollToEl(els.gateBox));
+
+    // ===== Init =====
+    loadState();
+    runSelfTests();
+
+    // 若尚未通過通關密語，先停在 gate
+    if (sessionStorage.getItem(STORAGE_KEY + '_gate') === '1') {
+      els.gateBox.style.display = 'none';
+      renderStep();
+    } else {
+      els.options.innerHTML = '';
+      els.revealBtn.disabled = true;
+      els.lockBox.classList.remove('show');
+      els.stepTitle.textContent = '—';
+      els.hint.textContent = '—';
+      updateLockUI();
+    }
+  </script>
+</body>
+</html>
